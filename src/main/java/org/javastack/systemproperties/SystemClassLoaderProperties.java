@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class SystemClassLoaderProperties extends Properties {
@@ -72,13 +73,16 @@ public final class SystemClassLoaderProperties extends Properties {
 
 	private final boolean checkExcludedClasssLoader(final ClassLoader classLoader) {
 		// final String name = classLoader.getClass().getName();
-		boolean skip = false;
-		// XXX SECURITY: This point is important
+		// boolean skip = false;
+		// // XXX SECURITY: This point is important
 		// skip |= (classLoader.getParent() == null);
 		// skip |= name.startsWith("sun.misc.Launcher$");
-		// log.info("checking: " + name + " parent=" + mapNull(classLoader.getParent(), "system") + " skip=" +
-		// skip);
-		return skip;
+		// if (log.isLoggable(Level.FINE)) {
+		// log.fine("checking: " + name + " parent=" + mapNull(classLoader.getParent(), "system") + " skip="
+		// + skip);
+		// }
+		// return skip;
+		return false;
 	}
 
 	private final Properties prop() {
@@ -281,15 +285,17 @@ public final class SystemClassLoaderProperties extends Properties {
 					rootMap = new WeakHashMap<ClassLoader, Properties>();
 					props.put(PROP_ROOT_KEY, rootMap);
 				}
-				try {
-					log.info("init:" + " ["
-							+ mapNull(origSystemProperties.getClass().getClassLoader(), "system") + "] "
-							+ origSystemProperties.getClass().getName() + "@"
-							+ Integer.toHexString(System.identityHashCode(origSystemProperties)) + " ["
-							+ mapNull(props.getClass().getClassLoader(), "system") + "] "
-							+ props.getClass().getName() + "@"
-							+ Integer.toHexString(System.identityHashCode(props)));
-				} catch (Exception ign) {
+				if (log.isLoggable(Level.FINE)) {
+					try {
+						log.fine("init:" + " ["
+								+ mapNull(origSystemProperties.getClass().getClassLoader(), "system") + "] "
+								+ origSystemProperties.getClass().getName() + "@"
+								+ Integer.toHexString(System.identityHashCode(origSystemProperties)) + " ["
+								+ mapNull(props.getClass().getClassLoader(), "system") + "] "
+								+ props.getClass().getName() + "@"
+								+ Integer.toHexString(System.identityHashCode(props)));
+					} catch (Exception ign) {
+					}
 				}
 			}
 			// XXX SECURITY: This point is important
