@@ -285,8 +285,8 @@ public final class SystemClassLoaderProperties extends Properties {
 					rootMap = new WeakHashMap<ClassLoader, Properties>();
 					props.put(PROP_ROOT_KEY, rootMap);
 				}
-				if (log.isLoggable(Level.FINE)) {
-					try {
+				try {
+					if (log.isLoggable(Level.FINE)) {
 						log.fine("init:" + " ["
 								+ mapNull(origSystemProperties.getClass().getClassLoader(), "system") + "] "
 								+ origSystemProperties.getClass().getName() + "@"
@@ -294,8 +294,8 @@ public final class SystemClassLoaderProperties extends Properties {
 								+ mapNull(props.getClass().getClassLoader(), "system") + "] "
 								+ props.getClass().getName() + "@"
 								+ Integer.toHexString(System.identityHashCode(props)));
-					} catch (Exception ign) {
 					}
+				} catch (Throwable ign) {
 				}
 			}
 			// XXX SECURITY: This point is important
