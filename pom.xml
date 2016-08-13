@@ -58,6 +58,9 @@
 							<Built-By>Maven</Built-By>
 							<Premain-Class>org.javastack.agents.SystemClassLoaderPropertiesAgent</Premain-Class>
 							<Agent-Class>org.javastack.agents.SystemClassLoaderPropertiesAgent</Agent-Class>
+							<Implementation-Vendor>${project.groupId}</Implementation-Vendor>
+							<Implementation-Title>${project.groupId}:${project.artifactId}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
 						</manifestEntries>
 					</archive>
 					<excludes>
