@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public final class SystemClassLoaderProperties extends Properties {
 	private static final UUID PROP_ROOT_KEY = UUID.fromString("5afdfdcb-aaa2-47ca-8d2a-cba995c8055d");
-	private static final UUID PROP_CLASSLOADER_KEY = UUID.fromString("7b5f3408-2bfa-407c-be87-4e539cfd2347");
+	private static final String PROP_CLASSLOADER_KEY = "7b5f3408-2bfa-407c-be87-4e539cfd2347";
 	private static final long serialVersionUID = 42L;
 
 	private static final Logger log = Logger.getLogger(SystemClassLoaderProperties.class.getName());
@@ -64,7 +64,9 @@ public final class SystemClassLoaderProperties extends Properties {
 				// Copy On Access
 				thisProp = (Properties) parentProp.clone();
 				thisProp.remove(PROP_ROOT_KEY);
-				thisProp.put(PROP_CLASSLOADER_KEY, String.valueOf(classLoader));
+				// Debug Info
+				thisProp.put(PROP_CLASSLOADER_KEY,
+						String.valueOf(classLoader).replaceAll("[^a-zA-Z0-9 /@:_.=<>{}-]", "?"));
 			}
 			rootMap.put(classLoader, thisProp);
 		}
@@ -170,8 +172,8 @@ public final class SystemClassLoaderProperties extends Properties {
 	}
 
 	@Override
-	public synchronized void loadFromXML(final InputStream in) throws IOException,
-			InvalidPropertiesFormatException {
+	public synchronized void loadFromXML(final InputStream in)
+			throws IOException, InvalidPropertiesFormatException {
 		prop().loadFromXML(in);
 	}
 
